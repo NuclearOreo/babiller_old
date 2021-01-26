@@ -1,3 +1,5 @@
+mod utils;
+
 #[derive(Debug, PartialEq)]
 pub struct Number(pub i32);
 
@@ -36,8 +38,12 @@ pub struct Expr {
 
 impl Expr {
     pub fn new(s: &str) -> Self {
-        let lhs = Number::new(s);
-        let rhs = Number::new(s);
+        let (s, lhs) = utils::extract_digits(s);
+        let lhs = Number::new(lhs);
+
+        let (s, rhs) = utils::extract_digits(s);
+        let rhs = Number::new(rhs);
+
         let op = Op::new(s);
 
         Self { lhs, rhs, op }
