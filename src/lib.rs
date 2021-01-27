@@ -41,10 +41,11 @@ impl Expr {
         let (s, lhs) = utils::extract_digits(s);
         let lhs = Number::new(lhs);
 
-        let (s, rhs) = utils::extract_digits(s);
-        let rhs = Number::new(rhs);
+        let (s, op) = utils::extract_op(s);
+        let op = Op::new(op);
 
-        let op = Op::new(s);
+        let (_, rhs) = utils::extract_digits(s);
+        let rhs = Number::new(rhs);
 
         Self { lhs, rhs, op }
     }
