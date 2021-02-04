@@ -128,4 +128,28 @@ mod tests {
             )
         );
     }
+
+    #[test]
+    fn eval_add() {
+        let (_, add) = Expr::new("2 + 2");
+        assert_eq!(add.eval(), Val::Number(4));
+    }
+
+    #[test]
+    fn eval_sub() {
+        let (_, sub) = Expr::new("10 -   60");
+        assert_eq!(sub.eval(), Val::Number(-50));
+    }
+
+    #[test]
+    fn eval_mul() {
+        let (_, mul) = Expr::new("10     * 2");
+        assert_eq!(mul.eval(), Val::Number(20));
+    }
+
+    #[test]
+    fn eval_div() {
+        let (_, div) = Expr::new("100/2");
+        assert_eq!(div.eval(), Val::Number(50));
+    }
 }
