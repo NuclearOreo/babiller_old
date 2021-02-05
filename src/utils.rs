@@ -42,9 +42,9 @@ pub(crate) fn extract_ident(s: &str) -> (&str, &str) {
 
 pub(crate) fn tag<'a, 'b>(starting_text: &'a str, s: &'b str) -> &'b str {
     if s.starts_with(starting_text) {
-        &s[starting_text.len()..]
+        Ok(&s[starting_text.len()..])
     } else {
-        panic!("expected {}", starting_text)
+        Err(format!("expected {}", starting_text))
     }
 }
 
@@ -114,6 +114,6 @@ mod tests {
 
     #[test]
     fn tag_word() {
-        assert_eq!(tag("let", "let b"), " b");
+        assert_eq!(tag("let", "let b"), Ok(" b"));
     }
 }

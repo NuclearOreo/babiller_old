@@ -36,10 +36,9 @@ impl Op {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Expr {
-    pub lhs: Number,
-    pub rhs: Number,
-    pub op: Op,
+pub enum Expr {
+    Number(Number),
+    Operation { lhs: Number, rhs: Number, op: Op },
 }
 
 impl Expr {
@@ -52,7 +51,7 @@ impl Expr {
 
         let (s, rhs) = Number::new(s);
 
-        (s, Self { lhs, rhs, op })
+        Ok((s, Self { lhs, rhs, op }))
     }
 
     pub(crate) fn eval(&self) -> Val {
@@ -76,41 +75,41 @@ mod tests {
 
     #[test]
     fn parse_number() {
-        assert_eq!(Number::new("123"), ("", Number(123)));
+        assert_eq!(Number::new("123"), Ok(("", Number(123))));
     }
 
     #[test]
     fn parse_add_op() {
-        assert_eq!(Op::new("+"), ("", Op::Add));
+        assert_eq!(Op::new("+"), Ok(("", Op::Add)));
     }
 
     #[test]
     fn parse_sub_op() {
-        assert_eq!(Op::new("-"), ("", Op::Sub));
+        assert_eq!(Op::new("-"), Ok(("", Op::Sub)));
     }
 
     #[test]
     fn parse_mul_op() {
-        assert_eq!(Op::new("*"), ("", Op::Mul));
+        assert_eq!(Op::new("*"), Ok(("", Op::Mul)));
     }
 
     #[test]
     fn parse_div_op() {
-        assert_eq!(Op::new("/"), ("", Op::Div));
+        assert_eq!(Op::new("/"), Ok(("", Op::Div)));
     }
 
     #[test]
     fn parse_one_plus_two() {
         assert_eq!(
             Expr::new("1+2"),
-            (
+            Ok((
                 "",
                 Expr {
                     lhs: Number(1),
                     rhs: Number(2),
                     op: Op::Add,
                 }
-            )
+            ))
         );
     }
 
@@ -118,14 +117,14 @@ mod tests {
     fn parse_two_plus_two() {
         assert_eq!(
             Expr::new("2 + 2"),
-            (
+            Ok((
                 "",
                 Expr {
                     lhs: Number(2),
                     rhs: Number(2),
                     op: Op::Add,
                 }
-            )
+            ))
         );
     }
 
