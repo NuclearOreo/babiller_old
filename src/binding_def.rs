@@ -9,26 +9,25 @@ pub struct BindingDef {
 }
 
 impl BindingDef {
-    pub fn new(s: &str) -> (&str, Self) {
-        let s = utils::tag("let", s);
-
+    pub fn new(s: &str) -> Result<(&str, Self), String> {
+        let s = utils::tag("let", s)?;
         let (s, _) = utils::extract_whitespace(s);
 
         let (s, name) = utils::extract_ident(s);
         let (s, _) = utils::extract_whitespace(s);
 
-        let s = utils::tag("=", s);
+        let s = utils::tag("=", s)?;
         let (s, _) = utils::extract_whitespace(s);
 
-        let (s, val) = Expr::new(s);
+        let (s, val) = Expr::new(s)?;
 
-        (
+        Ok((
             s,
             Self {
                 name: name.to_string(),
                 val: val,
             },
-        )
+        ))
     }
 
     pub(crate) fn eval(&self, env: &mut Env) {
@@ -49,7 +48,7 @@ mod tests {
                 "",
                 (BindingDef {
                     name: "a".to_string(),
-                    val: Expr {
+                    val: Expr::Operation {
                         lhs: Number(10),
                         rhs: Number(2),
                         op: Op::Div,
