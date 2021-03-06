@@ -27,6 +27,7 @@ impl Block {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::binding_def::BindingDef;
     use crate::expr::{Expr, Number};
 
     #[test]
@@ -51,4 +52,33 @@ mod tests {
             )),
         );
     }
+
+    //     #[test]
+    //     fn parse_block_with_multiple_stmts() {
+    //         assert_eq!(
+    //             Block::new(
+    //                 "{
+    //     let a = 10
+    //     let b = a
+    //     b
+    // }",
+    //             ),
+    //             Ok((
+    //                 "",
+    //                 Block {
+    //                     stmts: vec![
+    //                         Stmt::BindingDef(BindingDef {
+    //                             name: "a".to_string(),
+    //                             val: Expr::Number(Number(10)),
+    //                         }),
+    //                         Stmt::BindingDef(BindingDef {
+    //                             name: "b".to_string(),
+    //                             val: ?, // what do we put here?
+    //                         }),
+    //                         Stmt::Expr(?), // and here?
+    //                     ],
+    //                 },
+    //             )),
+    //         );
+    //     }
 }
