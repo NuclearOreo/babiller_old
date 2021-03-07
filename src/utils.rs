@@ -15,6 +15,10 @@ pub(crate) fn extract_whitespace(s: &str) -> (&str, &str) {
     take_while(|c| c == ' ', s)
 }
 
+pub(crate) fn extract_whitespace1(s: &str) -> Result<(&str, &str), String> {
+    take_while1(|c| c == ' ', s, "expected a space".to_string())
+}
+
 pub(crate) fn take_while(accept: impl Fn(char) -> bool, s: &str) -> (&str, &str) {
     let whitespace_end = s
         .char_indices()
@@ -129,5 +133,12 @@ mod tests {
     #[test]
     fn tag_word() {
         assert_eq!(tag("let", "let b"), Ok(" b"));
+    }
+    #[test]
+    fn do_not_extract_spaces1_when_input_does_not_start_with_them() {
+        assert_eq!(
+            extract_whitespace1("blah"),
+            Err("expected a space".to_string()),
+        );
     }
 }
